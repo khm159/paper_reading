@@ -6,7 +6,7 @@
 
 기존의 Domain shfit를 다루는 논문들 중에서 style representation으로 이를 설명하려는 논문들에서는 *입력 이미지의 스타일로 도메인 특성을 모델링 할 수 있다* 라는 가정을 세워 성능을 향상 해왔음. 때문에 입력 데이터들을 가지고서 *스타일 정보를 잘 조작해서* augmentaiton 하는 방식으로 특정 도메인(style)에 de-biased 된 모델들을 획득해 왔음. 
 
-하지만 기존 방법들은 그냥 스타일을 섞거는 등의 방식으로 **deterministic한 style representation($\mu(x), \sigma(x)$)을 인터폴레이션[1] 했기 때문에 diversity에 대한 limitation이 있었음**. 이로 미루어 보아 가정하면, 만약 **training dataset이 매우 style diversity가 떨어질 경우 큰 효과를 보기 어려웠음.** 자연스럽게, 입력 데이터의 영향을 덜 받도록 style representation을 잘 생성 할 수 있는 것이 관심을 받아 왔음(다시 말하면, 입력 style representation의 diversity를 잘 늘리는 법, 그런데 semantic을 잘 유지하면서). 
+하지만 기존 방법들은 그냥 스타일을 섞거는 등의 방식으로 **deterministic한 style representation <img src="https://latex.codecogs.com/gif.latex?\mu(x)"/>, <img src="https://latex.codecogs.com/gif.latex?\sigma(x)"/> 을 인터폴레이션[1] 했기 때문에 diversity에 대한 limitation이 있었음**. 이로 미루어 보아 가정하면, 만약 **training dataset이 매우 style diversity가 떨어질 경우 큰 효과를 보기 어려웠음.** 자연스럽게, 입력 데이터의 영향을 덜 받도록 style representation을 잘 생성 할 수 있는 것이 관심을 받아 왔음(다시 말하면, 입력 style representation의 diversity를 잘 늘리는 법, 그런데 semantic을 잘 유지하면서). 
 
 이 논문에서는 이 방법을 고민해 보고, 특히 학습과정에서 <span style='color:red'>**모델이 업데이트 되며 점점 바뀌어 져 가는 feature map의 statistics를 이용해 보면 어떨까?**</span>(기존에는 과거와 현재 고려 x, 현재 배치내에서만 수행) 라는 생각에서 출발. 
 
@@ -61,7 +61,7 @@ Feature statistics가 style representation이고, 이 style representation은 �
 
 2. Novel style queue : source style queue와 novel style queue에 저장 된 style representation들과 **멀리 떨어진 style 들을 저장**
 
-당연히 각 queue는 $\mu(Z)$와 $\sigma(Z)$ 를 따로 구분해서 저장함, Queue이므로 오래된 스타일은 제거될 수 있음. 
+당연히 각 queue는 <img src="https://latex.codecogs.com/gif.latex?\mu(\textbf{Z})"/> 와 <img src="https://latex.codecogs.com/gif.latex?\sigma(\textbf{Z})"/> 를 따로 구분해서 저장함, Queue이므로 오래된 스타일은 제거될 수 있음. 
 
 ### II.3. Novel style synthesis 
 
@@ -73,7 +73,7 @@ Novel style을 생성하기 위해서 다음과 같은 2개의 중요한 criteri
 
 ### II.3.a. Prototype selection 
 
-Source style queue 안에서 $m_{p}$개의 프로토타입들을 선택함. <span style='color:red'>**이들을 고를 때 에는 distribution을 잘 설명할 수 있는 style 들을 추출함**</span>
+Source style queue 안에서 <img src="https://latex.codecogs.com/gif.latex?\m_{p}"/> 개의 프로토타입들을 선택함. <span style='color:red'>**이들을 고를 때 에는 distribution을 잘 설명할 수 있는 style 들을 추출함**</span>
 
 **어떤 방식으로 프로토타입들이 원본 distribution을 잘 설명할 수 있는지를 알 수 있을까?** 
 
@@ -84,54 +84,54 @@ Source style queue 안에서 $m_{p}$개의 프로토타입들을 선택함. <spa
 
 ### MMD 에대한 간단한 note
 
-간단히 보면, 추출된 스타일 셋인 $P$는 당연히 원래의 Source style queue set인 $S$의 서브셋임. 
+간단히 보면, 추출된 스타일 셋인 <img src="https://latex.codecogs.com/gif.latex?\mu(\mathcal{P})"/>는 당연히 원래의 Source style queue set인 <img src="https://latex.codecogs.com/gif.latex?\mathcal(S)"/> 의 서브셋임. 
 
 MMD 는 두 분포간 차이를 측정하는 distance라는 개념임. 
 
 먼저 가장 간단한 예인 first-order MMD를 살펴 보겠음. 
 
-$MMD (P,Q) = || \mathbb{E}_{X \sim P} [\varphi(X)] - \mathbb{E}_{Y \sim Q} [\varphi(Y)]||_{\mathcal{H}}$
+<img src="https://latex.codecogs.com/gif.latex?MMD (P,Q) = || \mathbb{E}_{X \sim P} [\varphi(X)] - \mathbb{E}_{Y \sim Q} [\varphi(Y)]||_{\mathcal{H}}"/> 
  
-위와 같이 어떤 분포 P와 Q간의 거리를 측정해야할 때, 우리는 그 데이터를 대표하는 어떤 subset을 추출하여 이들간의 거리를 비교할 수 있음. 여기서 $\varphi$ 는 입력을 어떤 차원으로 보내는 함수라고 볼 수 있음. 
+위와 같이 어떤 분포 P와 Q간의 거리를 측정해야할 때, 우리는 그 데이터를 대표하는 어떤 subset을 추출하여 이들간의 거리를 비교할 수 있음. 여기서 <img src="https://latex.codecogs.com/gif.latex?\varphi"/> 는 입력을 어떤 차원으로 보내는 함수라고 볼 수 있음. 
 
 왜 이함수를 쓸까요? 나중에 내적을 연산해야 하는데 입력 차원이 너무 크면 내적 연산의 복잡도가 너무 올라가게 됨, 그래서 이를 저차원으로 보내는 함수라고도 볼 수 있음(커널 트릭). 예전에는 잘 설계된 function을 설계했으나, 이제는 Deep NN이 이를 잘 수행할 수 있다고 여겨짐. 
 
-만약 $\varphi$가 입력을 잘 설명할 수 있는 embedding space로 보낼 수 있다면, 입력의 $\mu, \sigma^{2}$만 으로도 그 분포의 차이를 잘 설명할 수 있다는 말임. 
+만약 <img src="https://latex.codecogs.com/gif.latex?\varphi"/> 가 입력을 잘 설명할 수 있는 embedding space로 보낼 수 있다면, 입력의 <img src="https://latex.codecogs.com/gif.latex?\mu"/>, <img src="https://latex.codecogs.com/gif.latex?\sigma^{2}"/>만 으로도 그 분포의 차이를 잘 설명할 수 있다는 말임. 
 
-예를 들자면 만약 $\varphi$가 identity면 위 MMD 식은 단순히 입력 셋 간의 $\mu$의 차이를 distance로 나타낸 식이라고 볼 수 있음.
+예를 들자면 만약 <img src="https://latex.codecogs.com/gif.latex?\varphi"/> 가 identity면 위 MMD 식은 단순히 입력 셋 간의 <img src="https://latex.codecogs.com/gif.latex?\mu"/>의 차이를 distance로 나타낸 식이라고 볼 수 있음.
 
 즉 다시 보면은, 결국 MMD 라는 것은 <span style='color:red'>**각 분포로 부터 샘플링된 subset에 대해 그것을 어떤 embedding space로 보내는 함수에 의해서 획득된 abstract distibution간의 어떤 stat을 추출하고, 이 stat 간의 거리를 측정해 그 분포가 서로 얼마나 차이가 있는지를 본다고 할 수 있는 것임.**</span> 이를 통해서 그 분포 간의 abstract한 차이를 수치화 할 수 있음!. stat은 fisrt order statistics를 쓸지, second order statistics를 쓸지는 쓰기 나름.
 
 second-order MMD의 경우... 
 
 
-Sopecifically, letting $k(x,y) = <\varphi(x), \varphi(y)>_{\mathcal{H}}$  
+Sopecifically, letting 
 
-$MMD^{2} (P,Q) = || \mathbb{E}_{X \sim P} [\varphi(X)] - \mathbb{E}_{Y \sim Q} [\varphi(Y)]||^{2}_{\mathcal{H}}$
+<img src="https://latex.codecogs.com/gif.latex?k(x,y) = <\varphi(x), \varphi(y)>_{\mathcal{H}}"/> 
+ 
+<img src="https://latex.codecogs.com/gif.latex?MMD^{2}(P,Q) = ||\mathbb{E}_{X \sim P} [\varphi(X)] - \mathbb{E}_{Y \sim Q} [\varphi(Y)]||^{2}_{\mathcal{H}}="/> 
+ 
+<img src="https://latex.codecogs.com/gif.latex?<\mathbb{E}_{X \sim P} [\varphi(X), \mathbb{E}_{X' \sim P} (\varphi (X'))>_{\mathcal{H}}"/> 
 
-$=$ 
+<img src="https://latex.codecogs.com/gif.latex?+<\mathbb{E}_{Y \sim Q} [\varphi(Y), \mathbb{E}_{Y' \sim P} (\varphi (Y'))>_{\mathcal{H}}"/> 
 
-$<\mathbb{E}_{X \sim P} [\varphi(X), \mathbb{E}_{X' \sim P} (\varphi (X'))>_{\mathcal{H}}$
-
-$+<\mathbb{E}_{Y \sim Q} [\varphi(Y), \mathbb{E}_{Y' \sim P} (\varphi (Y'))>_{\mathcal{H}}$
-
-$-2<\mathbb{E}_{X \sim Q} [\varphi(X), \mathbb{E}_{Y \sim P} (\varphi (Y))>_{\mathcal{H}}$
+<img src="https://latex.codecogs.com/gif.latex?-2<\mathbb{E}_{X \sim Q} [\varphi(X), \mathbb{E}_{Y \sim P} (\varphi (Y))>_{\mathcal{H}}"/> 
+ 
 
 여기서 X~P와 X'~P의 차이, 그리고 Y~Q와 Y'~Q의 차이는 resampling, 즉 동일한 분포에서 서로 다른 셋을 샘플링 한 것임 
 
 여기서 kernel trick을 사용하면 (내적)
 
-$k(x,y) = <\varphi(x), \varphi(y)>$
+<img src="https://latex.codecogs.com/gif.latex?k(x,y) = <\varphi(x), \varphi(y)>"/> 
+ 
+<img src="https://latex.codecogs.com/gif.latex?MMD^{2} (P,Q) = || \mathbb{E}_{X \sim P} [\varphi(X)] - \mathbb{E}_{Y \sim Q} [\varphi(Y)]||^{2}_{\mathcal{H}}="/> 
+ 
+<img src="https://latex.codecogs.com/gif.latex?\mathbb{E}_{X,X' \sim P} k(X, X')"/> 
 
-$MMD^{2} (P,Q) = || \mathbb{E}_{X \sim P} [\varphi(X)] - \mathbb{E}_{Y \sim Q} [\varphi(Y)]||^{2}_{\mathcal{H}}$
+<img src="https://latex.codecogs.com/gif.latex?+\mathbb{E}_{Y,Y' \sim Q} k(Y, Y')"/> 
 
-$=$ 
+<img src="https://latex.codecogs.com/gif.latex?-2\mathbb{E}_{X \sim P, Y \sim Q} k(X, Y)"/> 
 
-$\mathbb{E}_{X,X' \sim P} k(X, X') $
-
-$+\mathbb{E}_{Y,Y' \sim Q} k(Y, Y') $
-
-$-2\mathbb{E}_{X \sim P, Y \sim Q} k(X, Y) $
 
 의 형태로 정의됨. 
 
@@ -143,14 +143,15 @@ $-2\mathbb{E}_{X \sim P, Y \sim Q} k(X, Y) $
 
 ![equation3](./004.png)
 
-당연히 어떤 subset $P$를 $S$로 부터 샘플링 했을 때 이게 얼마나 원분포와 가까운가에 대한 score function을 만들어야 하고, 이 score를 maximize 해야 함. 
+당연히 어떤 subset <img src="https://latex.codecogs.com/gif.latex?\mathcal{P}"/>를 <img src="https://latex.codecogs.com/gif.latex?\mathcal{S}"/> 로 부터 샘플링 했을 때 이게 얼마나 원분포와 가까운가에 대한 score function을 만들어야 하고, 이 score를 maximize 해야 함. 
 
 
-자세한 설명은 [4]를 참고하면 되고, 위 $J_{b}$의 두 term 에대해서 원 분포와 그 서브셋 간의 **negative** $MMD^{2}_{k}$를 보면 알 수 있듯이, 서브셋이 원분포와 멀면 멀수록 가중치가 들어간다고 보면됨(negation이기 때문). 앞의 term은  $J_{b}(\phi)$ 가 항상 0으로 나오게 하기 위해 추가된 것이라고 [4]에 증명 되어 있음. 
+자세한 설명은 [4]를 참고하면 되고, 위 <img src="https://latex.codecogs.com/gif.latex?J_{b}"/> 의 두 term 에대해서 원 분포와 그 서브셋 간의 **negative** <img src="https://latex.codecogs.com/gif.latex?MMD^{2}_{k}"/> 
+ 를 보면 알 수 있듯이, 서브셋이 원분포와 멀면 멀수록 가중치가 들어간다고 보면됨(negation이기 때문). 앞의 term은 <img src="https://latex.codecogs.com/gif.latex?J_{\phi}"/> 가 항상 0으로 나오게 하기 위해 추가된 것이라고 [4]에 증명 되어 있음. 
 
-<span style='color:red'>**다시 말해 $J_{b}$ score가 크면 정의 그자체로 그냥 두 분포가 멀어졌다고 볼 수 있음**</span>
+<span style='color:red'>**다시 말해 <img src="https://latex.codecogs.com/gif.latex?J_{b}"/> score가 크면 정의 그자체로 그냥 두 분포가 멀어졌다고 볼 수 있음**</span>
 
-그러니까 당연히 $J_{b}$ 가 maximized 되도록 $P$를 샘플링하면 그게 representative 한 style set을 추출하는 거라고 볼 수 있음 
+그러니까 당연히 <img src="https://latex.codecogs.com/gif.latex?J_{b}"/> 가 maximized 되도록 <img src="https://latex.codecogs.com/gif.latex?\mathcal{P}"/>를 샘플링하면 그게 representative 한 style set을 추출하는 거라고 볼 수 있음 
 
 
 ![equation4](./005.png)
@@ -159,37 +160,37 @@ $-2\mathbb{E}_{X \sim P, Y \sim Q} k(X, Y) $
 
 ### II.3.b. Random Jittering 
 
-앞 section에서는 prototyle subset $\mathcal{P}$를 샘플링하는 방법을 다루어 보았음. 여기서 부터는 given source style set $\mathcal{S}$를 가지고 어떻게 random style set $\mathcal{D}$를 생성하는지 설명하고 있음. 
+앞 section에서는 prototyle subset <img src="https://latex.codecogs.com/gif.latex?\mathcal{P}"/> 를 샘플링하는 방법을 다루어 보았음. 여기서 부터는 given source style set  <img src="https://latex.codecogs.com/gif.latex?\mathcal{S}"/>를 가지고 어떻게 random style set  <img src="https://latex.codecogs.com/gif.latex?\mathcal{D}"/>를 생성하는지 설명하고 있음. 
 
 간단히 말하자면 원본에 노이즈를 섞는 가장 간단한 방법을 사용함. 그래서 논문에도 몇줄 안써져 있음.
 
-먼저 추출된 style set 의 $\sigma$를 연산함. 
+먼저 추출된 style set 의 <img src="https://latex.codecogs.com/gif.latex?\sigma"/>를 연산함. 
 
-그리고 그 $\sigma$를 이용해 가우시안 노이즈를 injection함.
+그리고 그  <img src="https://latex.codecogs.com/gif.latex?\sigma"/>를 이용해 가우시안 노이즈를 injection함.
 
-$\mathcal{N}(0, \lambda diag(\sigma(\mathcal{S})))$
+ <img src="https://latex.codecogs.com/gif.latex?\mathcal{N}(0, \lambda diag(\sigma(\mathcal{S})))"/>
 
-여기서 $\lambda$ 는 sclable hyper parameter로 얼마나 노이즈를 추가할지를 결정함. 
+여기서 <img src="https://latex.codecogs.com/gif.latex?\lambda"/> 는 sclable hyper parameter로 얼마나 노이즈를 추가할지를 결정함. 
 
 ### II.3.c. Novel style selection 
 
 앞서 살펴본 바와 같이, 이제는 이번 학습때 사용할 novel style을 고를 때임. 
 
-이때는 앞서 overview에서 설명한 바와 같이, 기존 source domain을 잘 설명하는 prototype style들인 $\mathcal{P}$와 이전 iteration 까지 생성된 style 들인 $\mathcal{V}$들의 합집합과 최대한 거리가 먼 스타일을 선택 해야 할것임. 이전에 관측한 스타일들과 거리가 먼 것을 novel style candidate들의 quality라고 생각했을 때, withness function은 다음과 같이 정의될 수 있음
+이때는 앞서 overview에서 설명한 바와 같이, 기존 source domain을 잘 설명하는 prototype style들인 <img src="https://latex.codecogs.com/gif.latex?\mathcal{P}"/>와 이전 iteration 까지 생성된 style 들인 <img src="https://latex.codecogs.com/gif.latex?\mathcal{V}"/>들의 합집합과 최대한 거리가 먼 스타일을 선택 해야 할것임. 이전에 관측한 스타일들과 거리가 먼 것을 novel style candidate들의 quality라고 생각했을 때, withness function은 다음과 같이 정의될 수 있음
 
 ![equation5](./006.png)
 
 복잡해 보이지만, 생각보다 간단함. 
 
-앞서 $\mathcal{D}$는 이전 스타일이라고 했음. 
+앞서 <img src="https://latex.codecogs.com/gif.latex?\mathcal{D}"/>는 이전 스타일이라고 했음. 
 
 첫번째 term이 나타내는 바는 입력과 이전 스타일 들간의 similarity(내적 연산) 들의 평균 이라고 보면 됨. <span style='color:red'>**즉 이 term은 작아야함.**</span> 
 
 두번째 term 이나타내는 바는 입력과 프로토타입들(source domain을 가장 잘 설명하는 스타일들) 간의 similarity 들의 평균 이라고 보면 됨. <span style='color:red'>**즉 이 term 은 커져야함**</span>
 
-**즉 $g(x)$가 minimized 되어야 하는데... 논문에는 반대로 적혀있음. 오타거나 내가 이해를 반대로 했거나... 저 수식에 -만 붙이면 될텐데...**
+**즉 g(x)가 minimized 되어야 하는데... 논문에는 반대로 적혀있음. 오타거나 내가 이해를 반대로 했거나... 저 수식에 -만 붙이면 될텐데...**
 
-어쨋든 논문에선 $g(x)$를 maximize 한다고 되어 있음. 
+어쨋든 논문에선 g(x)를 maximize 한다고 되어 있음. 
 
 ### II.4. Training with novel styles 
 
