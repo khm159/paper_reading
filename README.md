@@ -2,14 +2,23 @@
 
 ## 1. Domain Generalization 
 
-#### [Style Neophile: Constantly Seeking Novel Styles for Domain Generalization, CVPR22](papers/cvpr22_style_neophile/content.ipynb) 
+#### [Style Neophile: Constantly Seeking Novel Styles for Domain Generalization, *CVPR22*](papers/cvpr22_style_neophile/content.ipynb) 
 
-#### Diversifying Spatial-Temporal Perception for Video Domain Generalization, NeurIPS 23
+#### Diversifying Spatial-Temporal Perception for Video Domain Generalization, *NeurIPS*, 2023
 
-#### [DomainDrop: Suppressing Domain-Sensitive channels for Domain Generalization, ICCV23](papers/iccv23_domaindrop/content.ipynb)
+#### [DomainDrop: Suppressing Domain-Sensitive channels for Domain Generalization, *ICCV23*](papers/iccv23_domaindrop/content.ipynb)
 
-## 2. Video Domain Generalization
+## 2. Shape-texture conflict
 
-## 3. Task Planning 
+#### Does enhanced shape bias improve neural network robustness to common corruptions?, *ICLR*, 2021
 
-#### GPT-4V(ision) for Robotics: Multimodal Task Planning from Human Demonstration, arXiv, 2023
+#### Shape-texture debiased neural network training, *ICLR*, 2021
+
+#### [Improving Robustness to Texture Bias via Shape-focused Augmentation, *CVPR*, 2022](papers/cvpr22_improving_robustness/Untitled.ipynb)
+
+#### The Origins and Prevalance of Texture Bias in Convolutional Neural Networks, *NeurIPS*, 2020
+
+## 3. Self supervised leaerning 
+
+## 4. Task Planning 
+
