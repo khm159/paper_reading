@@ -2,11 +2,11 @@
 
 ## 1. Domain Generalization 
 
-#### [Style Neophile: Constantly Seeking Novel Styles for Domain Generalization, *CVPR22*](papers/cvpr22_style_neophile/content.ipynb) 
+#### [Style Neophile: Constantly Seeking Novel Styles for Domain Generalization, *CVPR*, 2022](papers/cvpr22_style_neophile/content.ipynb) 
 
 #### Diversifying Spatial-Temporal Perception for Video Domain Generalization, *NeurIPS*, 2023
 
-#### [DomainDrop: Suppressing Domain-Sensitive channels for Domain Generalization, *ICCV23*](papers/iccv23_domaindrop/content.ipynb)
+#### [DomainDrop: Suppressing Domain-Sensitive channels for Domain Generalization, *ICCV*, 2023](papers/iccv23_domaindrop/content.ipynb)
 
 ## 2. Shape-texture conflict
 
